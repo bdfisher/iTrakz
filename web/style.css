@@ -1,0 +1,305 @@
+/*
+    Navbars: #276678
+    Navbar Text: #F6F5F5
+    Foreground Text: #276678
+    BG Text: #1687A7
+    Date/Info Text: #333
+    Date/Info BG: #D3E0EA
+    BTN Drop Shadow: #276678 x:0 y; 3 b?: 6 4%
+*/
+
+body { 
+    font-family: "Tahoma", "Helvetica Neue", sans-serif;
+}
+
+h1 {
+    font-family: "Satisfy", sans-serif;
+    text-align: center;
+    color: #F6F5F5;
+}
+
+hr {
+    background: #276678;
+    margin-top: 2%;
+    opacity: 100%;
+}
+
+/* Main Dashboard Boxes */
+.main-boxes {
+    margin-left: 13%;
+    margin-top: 2%;
+}
+
+.ticket-dashboard, .history-dashboard {
+    height: 350px;
+    border: solid 1px #777;
+}
+
+.active-tickets {
+    height: 350px;
+    border: solid 1px #777;
+    margin-top: 20px;
+}
+
+.history-dashboard {
+    padding-left: 0;
+    padding-right: 0;
+}
+/* ----------------------------------- */
+
+/* Elements inside the Boostrap Row/Column layout */
+.row h3{
+    font-size: 20px;
+    font-weight: bold;
+    color: #276678;
+    margin-bottom: 0;
+}
+
+.row button {
+    background-color: #276678;
+    margin-left: 75%;
+    margin-top: -5%;
+    margin-bottom: 0;
+    height: 35px;
+    text-align: center;
+    filter: drop-shadow(0px 3px 6px #276678);
+}
+/* ----------------------------------- */
+
+/* Side Navigation */
+
+.sidenav {
+  height: 100%; /* Full-height: remove this if you want "auto" height */
+  width: 160px; /* Set the width of the sidebar */
+  position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+  top: 10; /* Stay at the top */
+  left: 0;
+  background-color: #276678;
+  overflow-x: hidden;
+}
+
+.sidenav a {
+    text-decoration: none;
+    color: #F6F5F5;
+    padding: 6px 8px 40px 16px;
+    display: block;
+    font-size: 1.25rem;
+}
+/* ----------------------------------- */
+
+/* Create Ticket Nav Button */
+.nav-ticket {
+    background-color: #777;
+    font-size: 1.2rem;
+    border-radius: .5rem;
+    border: none;
+}
+/* ----------------------------------- */
+
+/* Form */
+.form-control {
+    width: 420px;
+    height: 41px;
+}
+/* ----------------------------------- */
+
+/* Navigation Color */
+.nav-color {
+    background-color: #276678;
+}
+/* ----------------------------------- */
+
+/* Bootstrap Icons */
+.bi-search {
+    width: 32px;
+    height: 32px;
+    fill: #F6F5F5;
+    margin-right: 10px;
+    margin-top: 5px;
+}
+
+.bi-person-circle {
+    width: 50px;
+    height: 50px;
+    fill: #F6F5F5;
+}
+
+.bi-layout-wtf, .bi-bug{
+    width: 22px;
+    height: 22px;
+    margin-right: 5px;
+    fill: #F6F5F5;
+}
+/* ----------------------------------- */
+
+/* Ticket Dashboard */
+.main-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #276678;
+    margin-bottom: 1px;
+}
+
+.description { 
+    font-size: 14px;
+    color: #1687A7;
+}
+/* ----------------------------------- */
+
+/* History Dashboard */
+.history-nav tr {
+    background: #D3E0EA;
+    color: #333;
+    width: 100%; 
+    line-height: 70%;
+}
+
+.history-info tr {
+    border-bottom: thin solid #777;
+}
+
+.history-info tr:nth-of-type(even) {
+    background-color: #D3E0EA;
+}
+
+.history-info tr td {
+    font-size: .975rem;
+    word-wrap: break-word;
+}
+
+.history-dashboard hr { 
+    margin-bottom: 0;
+}
+
+.history-dashboard h3 {
+    margin-left: 2.5%;
+}
+/* ----------------------------------- */
+
+/* Circle Ticket Numbers Dashboard */
+.circles {
+    margin-top: 6%;
+}
+
+.circle {
+    border-radius: 50%;
+    border: solid 1px #777;
+    width: 190px;
+    height: 181px;
+    margin-left: 12%;
+    font-size: 72px;
+    text-align: center;
+    padding-top: 10%;
+    color: #276678;
+    background-color: #F6F5F5;
+}
+
+.circle-caption {
+    text-align: center;
+    font-size: 16px;
+    color:#276678;
+}
+/* ----------------------------------- */
+
+/* Ticket Body */
+.ticket-main {
+    border-collapse: collapse;
+    margin: 25px auto;
+    border: thin solid #777;
+}
+
+.table {
+    --bs-table-striped-bg: #D3E0EA;
+    --bs-table-striped-color: #333;
+}
+
+.ticket-main thead tr {
+    background-color: #276678;
+    color: #F6F5F5;
+    text-align: left;
+}
+
+.ticket-main th, .ticket-main td {
+    padding: 7px 10px;
+}
+
+.ticket-main tbody tr {
+    border-bottom: thin solid #777;
+}
+
+.ticket-main tbody tr td {
+    word-wrap: break-word;
+}
+
+.ticket-btn {
+    background-color: #276678;
+    color:#F6F5F5;
+}
+
+.spinner-border {
+    position: fixed;
+    top: 30%;
+    left: 50%;
+    width: 2.2rem;
+    height: 2.2rem;
+    color:#276678;
+}
+
+.load-center {
+    position: fixed;
+    top: 35%;
+    left: 46.5%;
+    font-size: 1.4rem;
+    color:#276678;
+}
+
+.load-center2 {
+    position: fixed;
+    top: 35%;
+    left: 47%;
+    font-size: 1.4rem;
+    color:#276678;
+}
+
+
+/* ----------------------------------- */
+/* For Zach's laptop */
+@media (max-width: 1910px) {
+    .btn {
+        font-size: .9rem;
+    }
+}
+
+
+/* For smaller laptops */
+@media (max-width: 1540px) {
+    .btn {
+        font-size: .9rem;
+    }
+
+    .user {
+        margin-right: 15%;
+    }
+
+    .circle {
+    width: 190px;
+    height: 181px;
+    font-size: 72px;
+    }
+
+    .nav-ticket {
+    font-size: 1rem;
+    }
+
+    .ticket-main {
+    margin: 25px 200px;
+    }
+
+    #ticket {
+        margin: 25px 200px;
+    }
+
+    .ticket-overflow {
+        overflow-x: hidden;
+    }
+}
