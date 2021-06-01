@@ -8,7 +8,7 @@ This is a NodeJS project, so you have to have `nodejs` and `npm` installed on yo
 
 <pre>
 # Clone the repository
-git clone https://github.com/DoubleYouCash/iTrakz.git
+git clone https://github.com/bdfisher/iTrakz.git
 
 # Install dependencies
 cd ./iTrakz/backend/
@@ -28,4 +28,4 @@ If you haven't deleted the sample `database.db` file, you'll be presented with a
 
 # Demo
 
-This project was for CS 319 at Iowa State University during the Spring 2021 semester. I will be maintaining a demo deployment of the site at https://itrakz.zachkline.us/ if you want to see. This is a live database and any changes to it will be persistent. There is no permission system, so anybody on the internet can manipulate the database.
+This project was for CS 319 at Iowa State University during the Spring 2021 semester.
