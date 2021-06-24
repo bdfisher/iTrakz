@@ -144,6 +144,10 @@ hr {
     font-size: 14px;
     color: #1687A7;
 }
+
+.ticket-link {
+    text-decoration: none;
+}
 /* ----------------------------------- */
 
 /* History Dashboard */

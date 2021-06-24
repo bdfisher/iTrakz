@@ -4,6 +4,7 @@ const db = require('better-sqlite3')('./database.db'); // import sqlite
  * Database Handler Class designed to handle all tickets and history objects needed for the website
  *
  * @author Wyatt Duberstein
+ * @author Blake Fisher
  */
 class database {
 
@@ -260,7 +261,7 @@ class database {
             description += '...';
         }
 
-        let stmt = db.prepare("INSERT INTO tickets(title,author,time,description,content,status,responder,category) VALUES (?,?,datetime('now'),?,?,?,?,?)");
+        let stmt = db.prepare("INSERT INTO tickets(title,author,time,description,content,status,responder,category) VALUES (?,?,strftime('%H:%M %m-%d-%Y', 'now', 'localtime'),?,?,?,?,?)");
         stmt.run(title, author, description, content, status, responder, category);
 
         stmt = db.prepare("SELECT id FROM tickets WHERE title=? AND author=? AND content=? ORDER BY id DESC LIMIT 1");
@@ -298,7 +299,7 @@ class database {
      * @returns {Generator<*, void, *>}
      */
     createHistory(description, user, idOfTicket) {
-        let stmt = db.prepare("INSERT INTO history(date,description,user) VALUES (datetime('now'),?,?)");
+        let stmt = db.prepare("INSERT INTO history(date,description,user) VALUES (strftime('%H:%M %m-%d-%Y', 'now', 'localtime'),?,?)");
         stmt.run(description, user);
 
         stmt = db.prepare("SELECT id FROM history WHERE description=? AND user=? ORDER BY id DESC LIMIT 1");

@@ -92,7 +92,7 @@ var handlers = {
         homePageCode += "dashTickList.innerHTML = \'\';\n";
 
         for (let i = 0; i < Math.min(3, dashTickets.length); i++) {
-            homePageCode += "dashTickList.innerHTML += \"<p class='main-title'>" + sanitize(dashTickets[i].title) + "</p><p class='description'>" + sanitize(dashTickets[i].description) + "</p><hr />\";\n";
+            homePageCode += "dashTickList.innerHTML += \"<a class='ticket-link' href='/ticket.html?id=" + dashTickets[i].id + "'><p class='main-title'>" + sanitize(dashTickets[i].title) + "</p><p class='description'>" + sanitize(dashTickets[i].description) + "</p></a><hr />\";\n";
         }
 
 
@@ -112,6 +112,8 @@ var handlers = {
         let categoryIndices = {};
         categoryIndices["bug"] = "Bug";
         categoryIndices["hack"] = "Security Vulnerability";
+        categoryIndices["software"] = "Software Issue";
+        categoryIndices["hardware"] = "Hardware Issue";
         categoryIndices["other"] = "Other";
 
         let statusIndices = {};
