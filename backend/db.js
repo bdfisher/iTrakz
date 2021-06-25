@@ -1,4 +1,17 @@
-const db = require('better-sqlite3')('./database.db'); // import sqlite
+const db = require('mysql');
+const con = db.createConnection({
+    host: 'localhost',
+    user: 'admin',
+    password: 'itrakz',
+});
+
+con.connect((err) => {
+    if (err) {
+        console.log('Error connecting to Db');
+        return;
+    }
+    console.log('Connection established');
+});
 
 /**
  * Database Handler Class designed to handle all tickets and history objects needed for the website
@@ -13,36 +26,60 @@ class database {
      * Creates the tickets and the history table if they don't already exist
      */
     constructor() {
-        let stmt = db.prepare('CREATE TABLE IF NOT EXISTS history(' +
-            'id INTEGER PRIMARY KEY AUTOINCREMENT, ' +
-            'date DATETIME NOT NULL, ' +
-            'description VARCHAR(200) NOT NULL, ' +
-            'user VARCHAR(50) NOT NULL' +
-            ');');
-        stmt.run();
+        con.connect(function (err) {
+            if (err) throw err;
+            console.log("Connected!");
+            con.query("CREATE DATABASE IF NOT EXISTS itrakz;", function (err, result) {
+                if (err) throw err;
+                console.log("Database created");
+            });
+        });
 
-        stmt = db.prepare('CREATE TABLE IF NOT EXISTS tickets(' +
-            'id INTEGER PRIMARY KEY AUTOINCREMENT, ' +
-            'title VARCHAR(200) NOT NULL, ' +
-            'author VARCHAR(50) NOT NULL, ' +
-            'time DATETIME NOT NULL, ' +
-            'description VARCHAR(100) NOT NULL,' +
-            'content LONGTEXT NOT NULL, ' +
-            'status VARCHAR(20) NOT NULL, ' +
-            'responder VARCHAR(50), ' +
-            'category VARCHAR(20),' +
-            'lastHistoryEvent INTEGER,' +
-            'FOREIGN KEY(lastHistoryEvent) REFERENCES history(id)' +
-            ');');
-        stmt.run();
+        con.connect(function (err) {
+            if (err) throw err;
+            console.log("Connected!");
+            let sql = "USE itrakz;";
+            con.query(sql, function (err, result) {
+                if (err) throw err;
+            });
+
+            sql = 'CREATE TABLE IF NOT EXISTS history(' +
+                'id INTEGER PRIMARY KEY AUTOINCREMENT, ' +
+                'date DATETIME NOT NULL, ' +
+                'description VARCHAR(200) NOT NULL, ' +
+                'user VARCHAR(50) NOT NULL' +
+                ');';
+
+            con.query(sql, function (err, result) {
+                if (err) throw err;
+            });
+
+            sql = 'CREATE TABLE IF NOT EXISTS tickets(' +
+                'id INTEGER PRIMARY KEY AUTOINCREMENT, ' +
+                'title VARCHAR(200) NOT NULL, ' +
+                'author VARCHAR(50) NOT NULL, ' +
+                'time DATETIME NOT NULL, ' +
+                'description VARCHAR(100) NOT NULL,' +
+                'content LONGTEXT NOT NULL, ' +
+                'status VARCHAR(20) NOT NULL, ' +
+                'responder VARCHAR(50), ' +
+                'category VARCHAR(20),' +
+                'lastHistoryEvent INTEGER,' +
+                'FOREIGN KEY(lastHistoryEvent) REFERENCES history(id)' +
+                ');';
+
+            con.query(sql, function (err, result) {
+                if (err) throw err;
+            });
+        });
 
         // Creating a database to hold the accounts
         // Does this work? Do we want to try it?
-        /*stmt = db.prepare('CREATE TABLE IF NOT EXISTS accounts(' +
+        /*sql = 'CREATE TABLE IF NOT EXISTS accounts(' +
             'username VARCHAR(200) NOT NULL, ' +
             'password VARCHAR(200) NOT NULL, ' +
             ');');
-        stmt.run();*/
+        sql.run();*/
 
         console.log("Opened database");
     }
@@ -52,9 +89,9 @@ class database {
      * @returns {*}
      */
     checkNewOpenTickets() {
-        let stmt = db.prepare("SELECT * FROM tickets WHERE status='new'");
+        let sql = "SELECT * FROM tickets WHERE status='new'";
 
-        return stmt.all().length;
+        return sql.all().length;
     }
 
     /**
@@ -62,9 +99,9 @@ class database {
      * @returns {*}
      */
     checkInProgressTickets() {
-        let stmt = db.prepare("SELECT * FROM tickets WHERE status='prog'");
+        let sql = "SELECT * FROM tickets WHERE status='prog'";
 
-        return stmt.all().length;
+        return sql.all().length;
     }
 
     /**
@@ -72,9 +109,9 @@ class database {
      * @returns {*}
      */
     getOpenTickets() {
-        let stmt = db.prepare("SELECT * FROM tickets ORDER BY id DESC");
+        let sql = "SELECT * FROM tickets ORDER BY id DESC";
 
-        return stmt.all();
+        return sql.all();
     }
 
     /**
@@ -85,10 +122,10 @@ class database {
      */
     getTicketBit(id, bit) {
         // Prepares statement, selects all values
-        let stmt = db.prepare("SELECT * FROM tickets WHERE id=?");
+        let sql = "SELECT * FROM tickets WHERE id=?";
 
         // Returns statement with inserted `id`, selecting `bit` specifically
-        return stmt.get(id)[bit];
+        return sql.get(id)[bit];
     }
 
     /**
@@ -98,9 +135,9 @@ class database {
      * @returns {Generator<*, void, *>}
      */
     getHistoryBit(id, bit) {
-        let stmt = db.prepare("SELECT * FROM history WHERE id=?");
+        let sql = "SELECT * FROM history WHERE id=?";
 
-        return stmt.get(id)[bit];
+        return sql.get(id)[bit];
     }
 
     /**
@@ -110,9 +147,9 @@ class database {
      * @returns {Generator<*, void, *>}
      */
     getTicketById(id) {
-        let stmt = db.prepare("SELECT * FROM tickets WHERE id=?");
+        let sql = "SELECT * FROM tickets WHERE id=?";
 
-        return stmt.get(id);
+        return sql.get(id);
     }
 
     /**
@@ -121,8 +158,8 @@ class database {
      * @returns {[]}
      */
     getTicketsByAuthor(author) {
-        let stmt = db.prepare("SELECT id FROM tickets WHERE author=?");
-        let ids = stmt.all(author);
+        let sql = "SELECT id FROM tickets WHERE author=?";
+        let ids = sql.all(author);
         let returnArr = [];
 
         for (let i = 0; i < ids.length; i++) {
@@ -138,8 +175,8 @@ class database {
      * @returns {[]}
      */
     getTicketsByStatus(status) {
-        let stmt = db.prepare("SELECT id FROM tickets WHERE status=?");
-        let ids = stmt.all(status);
+        let sql = "SELECT id FROM tickets WHERE status=?";
+        let ids = sql.all(status);
         let returnArr = [];
 
         for (let i = 0; i < ids.length; i++) {
@@ -157,8 +194,8 @@ class database {
      * @returns {Generator<*, void, *>}
      */
     updateResponder(responder, id, user) {
-        let stmt = db.prepare("UPDATE tickets SET responder=? WHERE id=?");
-        stmt.run(responder, id);
+        let sql = "UPDATE tickets SET responder=? WHERE id=?";
+        sql.run(responder, id);
 
         this.createHistory("Ticket Response", user, id);
     }
@@ -171,8 +208,8 @@ class database {
      * @returns {Generator<*, void, *>}
      */
     updateCategory(newCategory, id, user) {
-        let stmt = db.prepare("UPDATE tickets SET category=? WHERE id=?");
-        stmt.run(newCategory, id);
+        let sql = "UPDATE tickets SET category=? WHERE id=?";
+        sql.run(newCategory, id);
 
         this.createHistory("Category Update: " + newCategory, user, id);
     }
@@ -185,8 +222,8 @@ class database {
      * @returns {Generator<*, void, *>}
      */
     updateStatus(newStatus, id, user) {
-        let stmt = db.prepare("UPDATE tickets SET status=? WHERE id=?");
-        stmt.run(newStatus, id);
+        let sql = "UPDATE tickets SET status=? WHERE id=?";
+        sql.run(newStatus, id);
 
         //Sanitize the status changes for history menu
         if (newStatus === "prog") newStatus = "In Progress";
@@ -209,11 +246,11 @@ class database {
             description += '...';
         }
 
-        let stmt = db.prepare("UPDATE tickets SET content=? WHERE id=?");
-        stmt.run(newContent, id);
+        let sql = "UPDATE tickets SET content=? WHERE id=?";
+        sql.run(newContent, id);
 
-        stmt = db.prepare("UPDATE tickets SET description=? WHERE id=?");
-        stmt.run(description, id);
+        sql = "UPDATE tickets SET description=? WHERE id=?";
+        sql.run(description, id);
 
         this.createHistory("Content Edit", user, id);
     }
@@ -226,8 +263,8 @@ class database {
      * @returns {Generator<*, void, *>}
      */
     updateTitle(newTitle, id, user) {
-        let stmt = db.prepare("UPDATE tickets SET title=? WHERE id=?");
-        stmt.run(newTitle, id);
+        let sql = "UPDATE tickets SET title=? WHERE id=?";
+        sql.run(newTitle, id);
 
         this.createHistory("Title Change: " + newTitle, user, id);
     }
@@ -238,8 +275,8 @@ class database {
      * @param user
      */
     deleteTicket(id, user) {
-        let stmt = db.prepare("DELETE FROM tickets WHERE id=?");
-        stmt.run(id);
+        let sql = "DELETE FROM tickets WHERE id=?";
+        sql.run(id);
 
         this.createHistory("Deleted Ticket " + id, user);
     }
@@ -261,11 +298,11 @@ class database {
             description += '...';
         }
 
-        let stmt = db.prepare("INSERT INTO tickets(title,author,time,description,content,status,responder,category) VALUES (?,?,strftime('%H:%M %m-%d-%Y', 'now', 'localtime'),?,?,?,?,?)");
-        stmt.run(title, author, description, content, status, responder, category);
+        let sql = "INSERT INTO tickets(title,author,time,description,content,status,responder,category) VALUES (?,?,strftime('%H:%M %m-%d-%Y', 'now', 'localtime'),?,?,?,?,?)";
+        sql.run(title, author, description, content, status, responder, category);
 
-        stmt = db.prepare("SELECT id FROM tickets WHERE title=? AND author=? AND content=? ORDER BY id DESC LIMIT 1");
-        let idOfTicket = stmt.get(title, author, content)['id'];
+        sql = "SELECT id FROM tickets WHERE title=? AND author=? AND content=? ORDER BY id DESC LIMIT 1";
+        let idOfTicket = sql.get(title, author, content)['id'];
 
         this.createHistory("Opened Ticket", author, idOfTicket);
     }
@@ -281,14 +318,14 @@ class database {
 
         password = Convert.ToBase64String(hash);
 
-        let stmt = db.prepare("INSERT INTO accounts(username, password) VALUES (?, ?)");
-        stmt.run(username, password);
+        let sql = "INSERT INTO accounts(username, password) VALUES (?, ?)");
+        sql.run(username, password);
     }*/
 
     getHistory() {
-        let stmt = db.prepare("SELECT * FROM history ORDER BY id DESC");
+        let sql = "SELECT * FROM history ORDER BY id DESC";
 
-        return stmt.all();
+        return sql.all();
     }
 
     /**
@@ -299,14 +336,14 @@ class database {
      * @returns {Generator<*, void, *>}
      */
     createHistory(description, user, idOfTicket) {
-        let stmt = db.prepare("INSERT INTO history(date,description,user) VALUES (strftime('%H:%M %m-%d-%Y', 'now', 'localtime'),?,?)");
-        stmt.run(description, user);
+        let sql = "INSERT INTO history(date,description,user) VALUES (strftime('%H:%M %m-%d-%Y', 'now', 'localtime'),?,?)";
+        sql.run(description, user);
 
-        stmt = db.prepare("SELECT id FROM history WHERE description=? AND user=? ORDER BY id DESC LIMIT 1");
-        let idOfHistory = stmt.get(description, user)['id'];
+        sql = "SELECT id FROM history WHERE description=? AND user=? ORDER BY id DESC LIMIT 1";
+        let idOfHistory = sql.get(description, user)['id'];
 
-        stmt = db.prepare("UPDATE tickets SET lastHistoryEvent=? WHERE id=?");
-        stmt.run(idOfHistory, idOfTicket)
+        sql = "UPDATE tickets SET lastHistoryEvent=? WHERE id=?";
+        sql.run(idOfHistory, idOfTicket)
     }
 }
 
