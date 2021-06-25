@@ -17,7 +17,7 @@ var handlers = {
            substitute the values obtained from the database into the HTML doc using `"document.getElementById('stuff').innerHTML = " + varFromDatabase;
          */
 
-        fs.readFile(__dirname + "/../web" + requestedFile, function(err, data) {
+        fs.readFile(__dirname + "/../" + requestedFile, function(err, data) {
             if (err) {
                 console.error("Attempted serving \"" + requestedFile + "\" with error \"" + err + "\"");
 
@@ -25,7 +25,7 @@ var handlers = {
                 response.end("<title>iTrakz Error: 404</title><h1 align='center'>404 - No noodles here!</h1>"); // 404 error if file not found
                 return
             } else {
-                console.log("Serving " + __dirname + "/web" + requestedFile); // Debug
+                console.log("Serving " + __dirname + "/" + requestedFile); // Debug
             }
 
             let jsFromHandler = ""; // This will be filled in by the appropriate request handler and added to the end of the page

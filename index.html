@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -18,7 +19,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.0/font/bootstrap-icons.css">
 
     <!--Local CSS-->
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="assets/style.css">
     <link href="data:image/x-icon;base64,AAABAAMAEBAAAAEAIABoBAAANgAAACAgAAABACAAKBEAAJ4EAAAwMAAAAQAgAGgmAADGFQAAKAAA
 ABAAAAAgAAAAAQAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB4aCox
 d2YnmHhmJ9l3Zif6d2Yn+nhmJ9l3ZieYeGgqMQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHFxHAl5
@@ -290,15 +291,164 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAA==" rel="icon" type="image/x-icon" />
-    <title>Updated Ticket | iTrakz</title>
+    <title>iTrakz</title>
 </head>
+
 <body>
-    <div class="text-center">
-        <div class="spinner-border" role="status">
+    <nav class="navbar nav-color sticky-top">
+        <div class="container-fluid">
+            <span class="navbar-brand mb-0">
+                <h1>iTrakz</h1>
+            </span>
         </div>
-        <p class="load-center2">Ticket Updated</p>
+    </nav>
+
+    <div class="sidenav">
+        <a href="index.html">
+            <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-layout-wtf" viewBox="0 0 16 16">
+                <path
+                    d="M5 1v8H1V1h4zM1 0a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1V1a1 1 0 0 0-1-1H1zm13 2v5H9V2h5zM9 1a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H9zM5 13v2H3v-2h2zm-2-1a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1H3zm12-1v2H9v-2h6zm-6-1a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1H9z" />
+            </svg>
+            Dashboard
+        </a>
+
+        <a href="tickets.html">
+            <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-bug" viewBox="0 0 16 16">
+                <path
+                    d="M4.355.522a.5.5 0 0 1 .623.333l.291.956A4.979 4.979 0 0 1 8 1c1.007 0 1.946.298 2.731.811l.29-.956a.5.5 0 1 1 .957.29l-.41 1.352A4.985 4.985 0 0 1 13 6h.5a.5.5 0 0 0 .5-.5V5a.5.5 0 0 1 1 0v.5A1.5 1.5 0 0 1 13.5 7H13v1h1.5a.5.5 0 0 1 0 1H13v1h.5a1.5 1.5 0 0 1 1.5 1.5v.5a.5.5 0 1 1-1 0v-.5a.5.5 0 0 0-.5-.5H13a5 5 0 0 1-10 0h-.5a.5.5 0 0 0-.5.5v.5a.5.5 0 1 1-1 0v-.5A1.5 1.5 0 0 1 2.5 10H3V9H1.5a.5.5 0 0 1 0-1H3V7h-.5A1.5 1.5 0 0 1 1 5.5V5a.5.5 0 0 1 1 0v.5a.5.5 0 0 0 .5.5H3c0-1.364.547-2.601 1.432-3.503l-.41-1.352a.5.5 0 0 1 .333-.623zM4 7v4a4 4 0 0 0 3.5 3.97V7H4zm4.5 0v7.97A4 4 0 0 0 12 11V7H8.5zM12 6a3.989 3.989 0 0 0-1.334-2.982A3.983 3.983 0 0 0 8 2a3.983 3.983 0 0 0-2.667 1.018A3.989 3.989 0 0 0 4 6h8z" />
+            </svg>
+            Tickets
+        </a>
     </div>
-    
+
+    <div class="container main-boxes">
+        <div class="row">
+            <div class="col-5 ticket-dashboard">
+                <div class="support-tickets-header">
+                    <h3>Support Tickets</h3>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
+                        Create Ticket
+                    </button>
+                    <hr>
+                </div>
+                <div id="tickList">
+                    
+                </div>
+
+                
+            </div>
+            
+            <div class="col-5 history-dashboard offset-1">
+                <h3>History</h3>
+                <hr>
+                <table class="table">
+                    <thead class="history-nav">
+                        <tr>
+                            <td>Date</td>
+                            <td>Description</td>
+                            <td>User</td>
+                        </tr>
+                    </thead>
+                    <tbody id="historyList" class="history-info">
+                        
+                    </tbody>
+                </table>
+            </div>
+            
+        </div>
+
+        <div class="row">
+            <div class="col-5 active-tickets">
+                <h3>Tickets</h3>
+                <a href="tickets.html"><button class="btn btn-primary">View Tickets</button></a>
+                <hr>
+
+                <div class="row circles">
+                    <div class="col">
+                        <div class="circle" id="new-open-tickets">
+
+                        </div>
+                        <p class="circle-caption">New Tickets</p>
+                    </div>
+                    
+                    <div class="col">
+                        <div class="circle" id="ip-tickets">
+
+                        </div>
+                        <p class="circle-caption">In Progress Tickets</p>
+                    </div>
+                </div>                
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Ticket Popup -->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabel">Create Ticket</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id='ticketForm' action="/submit_ticket.html" method="post">
+                        <label for="requester" class="form-label">Your name: </label>
+                        <input type="text" id="requester" name="requester" class="form-control" required>
+
+                        <label for="responder" class="form-label">Assigned to: </label>
+                        <input type="text" id="responder" name="responder" class="form-control" required>
+
+                        <label for="subject" class="form-label">Subject: </label>
+                        <input type="text" id="subject" name="subject" class="form-control" required>
+
+                        <label for="description" class="form-label">Description: </label>
+                        <textarea name="description" id="description" cols="20" rows="1" class="form-control" required></textarea>
+
+                        <label for="category" class="form-label">Category: </label>
+                        <select id="category" name="category" class="form-control" required>
+                            <option value="bug">Bug</option>
+                            <option value="hack">Security Vulnerability</option>
+                            <option value="software">Software Issue</option>
+                            <option value="hardware">Hardware Issue</option>
+                            <option value="other">Other</option>
+                        </select>
+
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary ticket-btn">Submit Ticket</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Login Popup -->
+    <div class="modal fade" id="myModal2" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabel2">Login</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id='loginForm'>
+                        <label for="username" class="form-label">Username: </label>
+                        <input type="text" id="username" name="username" class="form-control" required>
+
+                        <label for="pass" class="form-label">Password: </label>
+                        <input type="password" id="pass" name="pass" class="form-control" required>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary ticket-btn">Login</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
-<meta http-equiv="Refresh" content="1; url='/tickets.html'" />
+
 </html>

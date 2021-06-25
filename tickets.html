@@ -18,7 +18,7 @@
 
  
     <!--Local CSS-->
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="assets/style.css">
     <link href="data:image/x-icon;base64,AAABAAMAEBAAAAEAIABoBAAANgAAACAgAAABACAAKBEAAJ4EAAAwMAAAAQAgAGgmAADGFQAAKAAA
 ABAAAAAgAAAAAQAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB4aCox
 d2YnmHhmJ9l3Zif6d2Yn+nhmJ9l3ZieYeGgqMQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHFxHAl5
@@ -293,13 +293,25 @@ AAAAAAAAAAAAAAAAAAAAAA==" rel="icon" type="image/x-icon" />
     <title>Tickets - iTrakz</title>
 </head>
 
-<body class="tickets ticket-overflow">
+<body class="tickets">
     <nav class="navbar nav-color sticky-top">
         <div class="container-fluid">
             <span class="navbar-brand mb-0">
                 <h1>iTrakz</h1>
             </span>
+            <form class="d-flex" onsubmit="return false;">
+                <input id="search" type="text" class="form-control me-2" placeholder="Search" onkeyup="filterSearchTable()">
+                <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-search" viewBox="0 0 16 16">
+                    <path
+                        d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                    <rect class="btn btn-primary" width="20px" height="20px" fill-opacity="0" onclick="filterSearchTable()"/>
+                </svg>
+            </form>
 
+            <button class="btn btn-primary nav-ticket" data-bs-toggle="modal" data-bs-target="#myModal">
+                Create Ticket
+            </button>
+            <!-- Login Pop-Up -->
             <!-- <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-person-circle" viewBox="0 0 16 16">
                 <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
                 <path fill-rule="evenodd"
@@ -327,44 +339,132 @@ AAAAAAAAAAAAAAAAAAAAAA==" rel="icon" type="image/x-icon" />
         </a>
     </div>
 
-    <div class="container" id="ticket">
-        <br>
-        <p style="display:inline"><b>Author</b>: </p><p style="display:inline" id="author"></p>
-        <form action="/update_ticket.html" method="post" id="ticket-form" name="ticketform">
-            <br>
-            <label for="responder" class="form-label">Assigned to: </label>
-            <textarea form="ticket-form" id="responder" name="responder" class="form-control" required></textarea>
-            <br>
-            <label for="subject" class="form-label">Subject: </label>
-            <textarea id="subject" name="subject" class="form-control" required></textarea>
-            <br>
-            <label for="description" class="form-label">Description: </label>
-            <textarea name="description" id="description" cols="20" rows="1" class="form-control" required></textarea>
-            <br>
-            <label for="category" class="form-label">Category: </label>
-            <select id="category" name="category" class="form-control" required>
-                <option value="bug">Bug</option>
-                <option value="hack">Security Vulnerability</option>
-                <option value="other">Other</option>
-            </select>
-            <br>
-            <label for="status" class="form-label">Status: </label>
-            <select id="status" name="status" class="form-control" required>
-                <option value="new">New</option>
-                <option value="prog">In Progress</option>
-                <option value="resolved">Resolved</option>
-            </select>
-            <br>
-            <br>
-            <br>
-            <label for="editor" class="form-label">Editor's name:</label>
-            <textarea name="editor" id="editor" class="form-control" required></textarea>
-            <br>
-            <button style="display:inline" type="submit" class="btn btn-primary ticket-btn">Save edits</button>
-        </form>
-        <br>
-        <button style="display:inline" onclick="window.location.href='/tickets.html';" class="btn btn-secondary">Don't save</button>
-        <button style="display:inline" onclick="window.location.href = '/delete_ticket.html?id=' + window.location.href[window.location.href.length - 1] + '&user=' + document.getElementById('editor').value;" class="btn btn-danger">Delete ticket</button>
+    <div class="table-responsive">
+        <table class="table table-striped container ticket-main" id="ticket-table">
+            <thead>
+                <tr>
+                    <th id="0" onclick="sortTable(0)">Requester</th>
+                    <th id="1" onclick="sortTable(1)">ID</th>
+                    <th id="2" onclick="sortTable(2)">Subject</th>
+                    <th id="3" onclick="sortTable(3)">Description</th>
+                    <th id="4" onclick="sortTable(4)">Status</th>
+                    <th id="5" onclick="sortTable(5)">Assigned To</th>
+                    <th id="6" onclick="sortTable(6)">Category</th>
+                    <th id="7" onclick="sortTable(7)">View Ticket</th>
+                </tr>
+            </thead>
+            <tbody id="ticketList">
+                
+            </tbody>
+        </table>
+    </div>
+
+    <script type="text/javascript">
+        function sortTable(n) {
+            var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+            table = document.getElementById("ticket-table");
+            switching = true;
+            dir = "asc";
+
+            for (i = 0; i < 8; i++) {
+                document.getElementById(i).style.backgroundColor = "#276678";           //White
+            }
+            document.getElementById(n).style.backgroundColor = "rgb(119, 119, 119)";    // Gray
+
+            while (switching) {
+                switching = false;
+                rows = table.rows;
+                for (i = 1; i < (rows.length - 1); i++) {
+                    shouldSwitch = false;
+                    x = rows[i].getElementsByTagName("TD")[n];
+                    y = rows[i + 1].getElementsByTagName("TD")[n];
+                    if (dir == "asc") {
+                        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    } else if (dir == "desc") {
+                        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    }
+                }
+                if (shouldSwitch) {
+                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                    switching = true;
+                    switchcount++;
+                } else {
+                    if (switchcount == 0 && dir == "asc") {
+                        dir = "desc";
+                        switching = true;
+                    }
+                }
+            }
+        }
+
+        function filterSearchTable() {
+            var input, filter, table, rows, td, i, j, txtValue;
+            input = document.getElementById("search");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("ticket-table");
+
+            rows = table.rows;
+            for (i = 1; i < rows.length; i++) {
+                for (j = 0; j < 8; j++) {
+                    td = rows[i].getElementsByTagName("TD")[j];
+                    txtValue = td.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        rows[i].style.display = "";
+                        break;
+                    } else {
+                        rows[i].style.display = "none";
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Create Ticket popup -->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabel">Create Ticket</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-body">
+                        <form id='ticketForm' action="/submit_ticket.html" method="post">
+                            <label for="requester" class="form-label">Your name: </label>
+                            <input type="text" id="requester" name="requester" class="form-control" required>
+
+                            <label for="responder" class="form-label">Assigned to: </label>
+                            <input type="text" id="responder" name="responder" class="form-control" required>
+
+                            <label for="subject" class="form-label">Subject: </label>
+                            <input type="text" id="subject" name="subject" class="form-control" required>
+
+                            <label for="description" class="form-label">Description: </label>
+                            <textarea name="description" id="description" cols="20" rows="1" class="form-control" required></textarea>
+
+                            <label for="category" class="form-label">Category: </label>
+                            <select id="category" name="category" class="form-control" required>
+                                <option value="bug">Bug</option>
+                                <option value="hack">Security Vulnerability</option>
+                                <option value="other">Other</option>
+                            </select>
+
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary ticket-btn">Submit Ticket</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Create Login Popup -->
@@ -387,12 +487,10 @@ AAAAAAAAAAAAAAAAAAAAAA==" rel="icon" type="image/x-icon" />
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Login</button>
+                    <button type="submit" class="btn btn-primary ticket-btn">Login</button>
                 </div>
             </div>
         </div>
     </div>
-
 </body>
-
 </html>
